@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เรื่องราวลึกลับ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap');
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Kanit', sans-serif;
+            background: linear-gradient(45deg, #fbc7d4, #dab3ff, #f3d1ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            animation: backgroundMove 10s infinite linear;
+            transition: background 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(45deg, #2a0e2a, #1a0029, #3d1f47);
+        }
+
+        /* Animation for background movement */
+        @keyframes backgroundMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 100%; }
+        }
+
+        #story-container {
+            background-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            width: 100vw;
+            height: 100vh;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 1s ease-in-out forwards;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dark-mode #story-container {
+            background-color: rgba(41, 18, 66, 0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        #story-text {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+            margin-bottom: 30px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease, transform 1s ease, color 0.3s ease;
+            transform: translateY(10px);
+        }
+
+        .dark-mode #story-text {
+            color: #ffd1dc;
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        #key-input, #submit-btn, #next-btn {
+            font-size: 1.5rem;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #key-input {
+            width: 70%;
+            background-color: rgba(255, 255, 255, 0.5);
+            color: #6e1b70;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease;
+        }
+
+        .dark-mode #key-input {
+            background-color: rgba(255, 209, 220, 0.3);
+            color: #ffd1dc;
+            border: 1px solid rgba(255, 209, 220, 0.3);
+        }
+
+        #key-input::placeholder {
+            color: rgba(110, 27, 112, 0.7);
+        }
+
+        .dark-mode #key-input::placeholder {
+            color: rgba(255, 209, 220, 0.7);
+        }
+
+        #key-input:focus {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid #fff;
+        }
+
+        .dark-mode #key-input:focus {
+            background-color: rgba(255, 209, 220, 0.5);
+            border: 1px solid #ffd1dc;
+        }
+
+        #submit-btn, #next-btn {
+            background-color: #e573b5;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .dark-mode #submit-btn, .dark-mode #next-btn {
+            background-color: #ffd1dc;
+            color: #2a0e2a;
+        }
+
+        #submit-btn:hover, #next-btn:hover {
+            background-color: #d260a4;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+
+        .dark-mode #submit-btn:hover, .dark-mode #next-btn:hover {
+            background-color: #ffb6c1;
+        }
+
+        #next-btn {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #audio-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            background-color: rgba(229, 115, 181, 0.7);
+            border-radius: 25px;
+            padding: 10px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode #audio-controls {
+            background-color: rgba(255, 209, 220, 0.3);
+        }
+
+        #audio-controls:hover {
+            background-color: rgba(229, 115, 181, 0.9);
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .dark-mode #audio-controls:hover {
+            background-color: rgba(255, 209, 220, 0.5);
+        }
+
+        .audio-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: transparent;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            margin: 0 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-mode .audio-btn {
+            color: #ffd1dc;
+        }
+
+        .audio-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .dark-mode .audio-btn::before {
+            background-color: rgba(255, 209, 220, 0.3);
+        }
+
+        .audio-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .audio-btn:active {
+            transform: scale(0.95);
+        }
+
+        .audio-btn i {
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .audio-btn.muted i {
+            transform: scale(0.8);
+        }
+
+        #volume-slider {
+            -webkit-appearance: none;
+            width: 100px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            outline: none;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode #volume-slider {
+            background: rgba(255, 209, 220, 0.5);
+        }
+
+        #volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode #volume-slider::-webkit-slider-thumb {
+            background: #ffd1dc;
+        }
+
+        #volume-slider::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode #volume-slider::-moz-range-thumb {
+            background: #ffd1dc;
+        }
+
+        #volume-slider:hover::-webkit-slider-thumb {
+            transform: scale(1.2);
+        }
+
+        #volume-slider:hover::-moz-range-thumb {
+            transform: scale(1.2);
+        }
+
+        #volume-indicator {
+            font-size: 0.8rem;
+            color: white;
+            margin-left: 10px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .dark-mode #volume-indicator {
+            color: #ffd1dc;
+        }
+
+        #theme-toggle {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .dark-mode #theme-toggle {
+            color: #ffd1dc;
+        }
+
+        #theme-toggle:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="background-music" loop>
+        <source src="filehihiee/HereWithMe.mp3" type="audio/mpeg">
+        เบราว์เซอร์ของคุณไม่รองรับการเล่นเสียง
+    </audio>
+
+    <div id="story-container">
+        <div id="story-text">ใส่คีย์ตรงนี้เลยฮาฟฟฟ</div>
+        <div class="input-container">
+            <input type="text" id="key-input" placeholder="Key">
+        </div>
+        <button id="submit-btn">Go</button>
+        <button id="next-btn">Next</button>
+    </div>
+
+    <div id="audio-controls">
+        <button id="toggle-music" class="audio-btn">
+            <i class="fas fa-volume-up"></i>
+        </button>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
+        <div id="volume-indicator">100%</div>
+        <button id="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <script>
+        const storyText = document.getElementById('story-text');
+        const keyInput = document.getElementById('key-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const audio = document.getElementById('background-music');
+        const toggleMusicBtn = document.getElementById('toggle-music');
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeIndicator = document.getElementById('volume-indicator');
+        const themeToggle = document.getElementById('theme-toggle');
+
+        const story = [
+            "สวัสดี :)",
+            "เป็นไงบ้างช่วงนี้ สบายดีไหม?",
+            "เหนื่อยหรือเครียดอะไรบ้างรึป่าว",
+            "กำลังคิดอะไรอยู่เหรอ?",
+            "มีอะไรที่ทำให้ไม่สบายใจไหม...",
+            "แอบร้องไห้คนเดียวอยู่หรือเปล่า?",
+            "เล่าให้ฟังได้นะ",
+            "ถึงจะให้คำปรึกษาไม่เก่ง",
+            "แต่อยู่เป็นเพื่อนได้เสมอเลยนะ",
+            "ถ้าต้องการ :D",
+            "7 October",
+            "Level up",
+            "วันเกิดขอใครรึป่าว",
+            "สุขสันติวันเกิดนะ",
+            "โตขึ้นอีกปีแล้ว",
+            "เราขอให้แก",
+            "สุขภาพแข็งแรง",
+            "มีความสุข all day all night ",
+            "กินของอร่อยๆ",
+            "enjoy กับชีวิตเยอะๆ",
+            " เจอแต่สิ่งดีๆ",
+            "มีเพื่อนที่ดีเย้อๆๆ",
+            "อะไรที่มัน TOXIC",
+            "ก็แค่พาตัวเองออกมา",
+            "เพราะยิ่งฝืนก็ยิ่งทำร้ายตัวเอง :'(",
+            "เรื่องแย่ๆ ไม่สำคัญ ก็ไม่ต้องไปใส่ใจก็ได้",
+            "ขอให้มีรอยยิ้มอยู่บนใบหน้าตลอดไป",
+            "และขอให้เรายังคงเป็นเพื่อนกันไปนานๆ นะ",
+            "ขอบคุณ",
+            "ที่เกิดมาเป็นเพื่อนกันนะ",
+            "สุขสันติวันเกิดคั๊บราเชวว >3",
+            "สุขสันติวันเกิดคั๊บชมพู่",
+            "Enjoy eat cake"
+        ];
+
+        let currentLine = 0;
+
+        function showNextLine() {
+            if (currentLine < story.length) {
+                storyText.style.opacity = 0;
+                setTimeout(() => {
+                    storyText.textContent = story[currentLine];
+                    storyText.style.opacity = 1;
+                    storyText.style.transform = "translateY(0)";
+                    currentLine++;
+                    if (currentLine >= story.length) {
+                        nextBtn.style.display = 'none';
+                    }
+                }, 500);
+            }
+        }
+
+        submitBtn.addEventListener('click', () => {
+            const key = keyInput.value;
+            if (key === "1234") {
+                keyInput.style.display = 'none';
+                submitBtn.style.display = 'none';
+                nextBtn.style.display = 'inline-block';
+                currentLine = 0;
+                showNextLine();
+                audio.play();
+            } else {
+                storyText.textContent = "รหัสไม่ถูกต้อง ลองอีกครั้ง...";
+                setTimeout(() => {
+                    storyText.textContent = "ใส่รหัสลับเพื่อเริ่มเรื่องราว...";
+                }, 2000);
+            }
+        });
+
+        nextBtn.addEventListener('click', showNextLine);
+
+        toggleMusicBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                toggleMusicBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                toggleMusicBtn.classList.remove('muted');
+            } else {
+                audio.pause();
+                toggleMusicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                toggleMusicBtn.classList.add('muted');
+            }
+        });
+
+        volumeSlider.addEventListener('input', () => {
+            audio.volume = volumeSlider.value;
+            updateVolumeIndicator();
+            if (audio.volume === 0) {
+                toggleMusicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                toggleMusicBtn.classList.add('muted');
+            } else {
+                toggleMusicBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                toggleMusicBtn.classList.remove('muted');
+            }
+        });
+
+        function updateVolumeIndicator() {
+            const volumePercentage = Math.round(audio.volume * 100);
+            volumeIndicator.textContent = `${volumePercentage}%`;
+        }
+
+        document.addEventListener('click', () => {
+            audio.play();
+        }, { once: true });
+
+        updateVolumeIndicator();
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+    </script>
+</body>
+</html>
